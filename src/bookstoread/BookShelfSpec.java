@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BookShelfSpec {
@@ -63,6 +65,13 @@ public class BookShelfSpec {
     void bookshelfArrangedByBookTitle() {
         shelf.add(effectiveJava, codeComplete, mythicalManMonth);
         List<Book> books = shelf.arrange();
-        assertEquals(Arrays.asList(codeComplete, effectiveJava, mythicalManMonth),books,() -> "Books in a bookshelf should be arranged lexicographically by book title");
+        assertEquals(asList(codeComplete, effectiveJava, mythicalManMonth),books,() -> "Books in a bookshelf should be arranged lexicographically by book title");
+    }
+
+    @Test
+    void bookshelfArrangedByUserProvidedCriteria() {
+        shelf.add(effectiveJava, codeComplete, mythicalManMonth);
+        List<Book> books = shelf.arrange(Comparator.<Book>naturalOrder().reversed());
+        assertEquals(asList(mythicalManMonth, effectiveJava, codeComplete), books, () -> "Books in a bookshelf are arranged in descending order of book title");
     }
 }
